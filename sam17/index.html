@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+
+  <title>よくわかるPHPの教科書</title>
+</head>
+
+<body>
+  <header>
+    <h1 class="font-weight-normal">よくわかるPHPの教科書</h1>
+  </header>
+
+  <main>
+    <h2>フォームに入力した内容を取得する</h2>
+
+    <div class="content">
+
+
+      <!-- formタグで囲まれている部分がフォームになって表示される -->
+      <!-- ※action属性 フォームに入力した値を送信する先
+method属性 getは入力内容がURLに表示される postは表示されない -->
+      <form action="submit.php" method="get">
+        <!-- labelタグ 送信先で値を判別するためにラベル(名前)をつける -->
+        <label for="my_name">お名前：</label>
+        <!-- inputタグ フォームに必要なパーツを作成
+  type属性 必須 パーツの形
+  id属性 名前をつける 同じファイル内で重複不可 主にCSSと連携
+  ※name属性 名前をつける 送信先のファイルと連携
+  maxlength属性 最大文字数の指定
+  value属性 仲間分けをするときに使用 -->
+        <input type="text" id="my_name" name="my_name" maxlength="255" value="">
+        <input type="submit" value="送信する">
+      </form>
+
+
+
+    </div>
+  </main>
+</body>
+
+</html>

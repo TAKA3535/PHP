@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,9 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <pre>
+        セッションの値：<?php print($_SESSION['session_message']); ?>
+        <?php session_unset(); ?>
+    </pre>
 </body>
 </html>

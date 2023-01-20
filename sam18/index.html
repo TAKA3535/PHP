@@ -10,6 +10,9 @@
 
 <body>
   <form action="submit.php" method="post">
+    <!-- ラジオボタン：値を１つしか選択できない -->
+    <!-- name属性：値を受け取るファイルの配列内と名前を合わせる -->
+    <!-- value属性 受け取り側のファイルに送る値 -->
     <p>性別：<input type="radio" name="gender" value="male">男性 / <input type="radio" name="gender" value="female">女性 </p>
     <input type="submit" value="送信する">
   </form>

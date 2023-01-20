@@ -9,7 +9,11 @@
 <body>
     ご予約日：
     <?php
+    // foreach：配列内の要素全てを取り出す
+    // reserve配列の中身に変数reserveという名前を付けてprint()の処理を繰り返す
     foreach($_POST["reserve"] as $reserve){
+        //htmlspecialchars：いたずら防止、やってることはprint($reserve.' ');
+        // $reserveと半角スペースを表示
         print(htmlspecialchars($reserve, ENT_QUOTES).' ');
     }
     ?>

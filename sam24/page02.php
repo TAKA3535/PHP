@@ -7,6 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    
+    変数の値：<?php print($value); ?>
+    <!--$_COOKIEは保存されているCookieを取得  -->
+    Cookieの値 : <?php print($_COOKIE['save_message']); ?>
 </body>
 </html>

@@ -1,10 +1,12 @@
 <?php
-
+// namespaceはimport文みたいなもの
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
 // <!-- ↓2-7 P42 -->
+// 10行目はControllerクラスを継承したHelloControllerクラス
+// アクション処理
 // class HelloController extends Controller
 // {
 //     public function index() {
@@ -31,7 +33,7 @@ use Illuminate\Http\Request;
 // リスト2-9　P44
 // class HelloController extends Controller
 // {
-  
+
 //    public function index($id='noname', $pass='unknown') {
 
 //       return <<<EOF
@@ -77,10 +79,10 @@ use Illuminate\Http\Request;
 
 // class HelloController extends Controller
 // {
-  
+
 //    public function index() {
 //        global $head, $style, $body, $end;
-      
+
 //        $html = $head . tag('title','Hello/Index') . $style . $body
 //            . tag('h1','Index') . tag('p','this is Index page')
 //            . '<a href="/hello/other">go to Other page</a>'
@@ -90,7 +92,7 @@ use Illuminate\Http\Request;
 
 //    public function other() {
 //        global $head, $style, $body, $end;
-      
+
 //        $html = $head . tag('title','Hello/Other') . $style . $body
 //            . tag('h1','Other') . tag('p','this is Other page')
 //            . $end;
@@ -102,7 +104,7 @@ use Illuminate\Http\Request;
 // 2-13 P49
 // class HelloController extends Controller
 // {
-  
+
 //    public function __invoke() {
 
 //      return <<<EOF
@@ -134,7 +136,7 @@ use Illuminate\Http\Request;
 
 // class HelloController extends Controller
 // {
-  
+
 //    public function index(Request $request, Response $response) {
 
 // $html = <<<EOF
@@ -163,10 +165,120 @@ use Illuminate\Http\Request;
 // }
 
 // 3-3
+// class HelloController extends Controller
+// {
+//     public function index()
+//     {
+//     return view('hello.index');
+//     }
+// }
+
+// 3-6
+// class HelloController extends Controller
+// {
+//     public function index()
+//     {
+//         $data = ['msg' => 'これはコントローラから渡されたメッセージです。'];
+//         return view('hello.index', $data);
+//     }
+// }
+
+// 3-8
+// class HelloController extends Controller
+// {
+//     public function index($id = 'zero')
+//     {
+//         $data = [
+//             'msg' => 'これはコントローラから渡されたメッセージです。',
+//             'id' => $id
+//         ];
+//         return view('hello.index', $data);
+//     }
+// }
+
+// 3-10
+// class HelloController extends Controller
+// {
+//     public function index(Request $request)
+//     {
+//         $data = [
+//             'msg' => 'これはコントローラから渡されたメッセージです。',
+//             'id' => $request->id
+//         ];
+//         return view('hello.index', $data);
+//     }
+// }
+
+// 3-13 P69
+// class HelloController extends Controller
+// {
+//     public function index()
+//     {
+//         $data = [
+//             'msg' => 'これはBladeを利用したサンプルです。',
+//         ];
+//         return view('hello.index', $data);
+//     }
+// }
+
+// 3-15
+// class HelloController extends Controller
+// {
+
+//     public function index()
+//     {
+//         $data = [
+//             'msg' => 'お名前を入力下さい。',
+//         ];
+//         return view('hello.index', $data);
+//     }
+
+//     public function post(Request $request)
+//     {
+//         $msg = $request->msg;
+//         $data = [
+//             'msg' => 'こんにちは、' . $msg . 'さん！',
+//         ];
+//         return view('hello.index', $data);
+//     }
+// }
+
+// リスト3-18
+// class HelloController extends Controller
+// {
+
+//     public function index()
+//     {
+//         return view('hello.index', ['msg' => '']);
+//     }
+
+//     public function post(Request $request)
+//     {
+//         return view('hello.index', ['msg' => $request->msg]);
+//     }
+// }
+
+// 3-20 P78
+// class HelloController extends Controller
+// {
+
+//     public function index()
+//     {
+//         return view('hello.index');
+//     }
+
+//     public function post(Request $request)
+//     {
+//         return view('hello.index', ['msg' => $request->msg]);
+//     }
+// }
+
+//3-22 P80
 class HelloController extends Controller
 {
     public function index()
     {
-    return view('hello.index');
+        $data = ['one', 'two', 'three', 'four', 'five'];
+        return view('hello.index', ['data' => $data]);
     }
 }

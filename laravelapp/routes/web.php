@@ -23,4 +23,14 @@
 // });
 
 // リスト3-4
+// Route::get('hello', 'App\Http\Controllers\HelloController@index');
+
+// 3-9 P65
+// Route::get('hello/{id?}', 'App\Http\Controllers\HelloController@index');
+
+// 3-11
+// Route::get('hello', 'App\Http\Controllers\HelloController@index');
+
+// 3-16 P72
 Route::get('hello', 'App\Http\Controllers\HelloController@index');
+Route::post('hello', 'App\Http\Controllers\HelloController@post');

@@ -18,6 +18,7 @@
 // });
 
 // P33 リスト2-3 HTMLを出力する
+// helloのurlでリクエストがあれば、第二引数のfunction()・・・</html>';})までの処理が行われる
 // Route::get('/hello', function () {
 //     //HTMLを出力
 //     return '<html><body><h1>hello</h1><p>This is sample page.</p></body></html>';

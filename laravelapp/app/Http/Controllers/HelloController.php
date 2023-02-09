@@ -274,11 +274,75 @@ use Illuminate\Http\Request;
 // }
 
 //3-22 P80
+// class HelloController extends Controller
+// {
+//     public function index()
+//     {
+//         $data = ['one', 'two', 'three', 'four', 'five'];
+//         return view('hello.index', ['data' => $data]);
+//     }
+// }
+
+// 3-32 P96
+// class HelloController extends Controller
+// {
+//     public function index()
+//     {
+//         $data = [
+//             ['name' => '山田たろう', 'mail' => 'taro@yamada'],
+//             ['name' => '田中はなこ', 'mail' => 'hanako@flower'],
+//             ['name' => '鈴木さちこ', 'mail' => 'sachico@happy']
+//         ];
+//         return view('hello.index', ['data' => $data]);
+//     }
+// }
+
+// 3-38
+// class HelloController extends Controller
+// {
+//     public function index()
+//     {
+//         return view('hello.index', ['message' => 'Hello!']);
+//     }
+// }
+
+
+// リスト4-4 P112
+// class HelloController extends Controller
+// {
+//     public function index(Request $request)
+//     {
+//         return view('hello.index', ['data' => $request->data]);
+//     }
+// }
+
+// 4-8 P117
+// class HelloController extends Controller
+// {
+//     public function index(Request $request)
+//     {
+//         return view('hello.index');
+//     }
+// }
+
+// 4-15 P123
 class HelloController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $data = ['one', 'two', 'three', 'four', 'five'];
-        return view('hello.index', ['data' => $data]);
+        return view('hello.index', ['msg' => 'フォームを入力：']);
+    }
+
+
+    public function post(Request $request)
+    {
+        $validate_rule = [
+            'name' => 'required',
+            'mail' => 'email',
+            'age' => 'numeric|between:0,150',
+        ];
+        $this->validate($request, $validate_rule);
+        return view('hello.index', ['msg' => '正しく入力されました！']);
     }
 }

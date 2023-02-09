@@ -194,7 +194,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        // リスト3-36 P103
+        App\Providers\HelloServiceProvider::Class
     ],
 
     /*

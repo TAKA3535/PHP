@@ -32,5 +32,19 @@
 // Route::get('hello', 'App\Http\Controllers\HelloController@index');
 
 // 3-16 P72
+// Route::get('hello', 'App\Http\Controllers\HelloController@index');
+// Route::post('hello', 'App\Http\Controllers\HelloController@post');
+
+// 4-3 ミドルウェアの実行 P112 
+use App\Http\Middleware\HelloMiddleware;
+
+// Route::get('hello', 'App\Http\Controllers\HelloController@index')
+//     ->middleware(HelloMiddleware::class);
+
+// 4-13
+// Route::get('hello', 'App\Http\Controllers\HelloController@index')
+//     ->middleware('helo');
+
+// 4-16 P123
 Route::get('hello', 'App\Http\Controllers\HelloController@index');
 Route::post('hello', 'App\Http\Controllers\HelloController@post');

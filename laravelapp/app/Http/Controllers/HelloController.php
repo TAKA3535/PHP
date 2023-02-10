@@ -178,7 +178,10 @@ use Illuminate\Http\Request;
 // {
 //     public function index()
 //     {
+// hello.indexテンプレートを変数ataを使ってレンダリング(穴埋め)して、
+// view(テンプレート名,第1引数に設定したテンプレート)
 //         $data = ['msg' => 'これはコントローラから渡されたメッセージです。'];
+// returnはview()メソッドで呼び出した結果を返す
 //         return view('hello.index', $data);
 //     }
 // }
@@ -326,23 +329,160 @@ use Illuminate\Http\Request;
 // }
 
 // 4-15 P123
+// class HelloController extends Controller
+// {
+
+//     public function index(Request $request)
+//     {
+//         return view('hello.index', ['msg' => 'フォームを入力：']);
+//     }
+
+
+//     public function post(Request $request)
+//     {
+//         $validate_rule = [
+//             'name' => 'required',
+//             'mail' => 'email',
+//             'age' => 'numeric|between:0,150',
+//         ];
+//         $this->validate($request, $validate_rule);
+//         return view('hello.index', ['msg' => '正しく入力されました！']);
+//     }
+
+// 4-38 崛起を保存しそれを表示 P164
+// class HelloController extends Controller
+// {
+
+//     public function index(Request $request)
+//     {
+//         if ($request->hasCookie('msg')) {
+//             $msg = 'Cookie: ' . $request->cookie('msg');
+//         } else {
+//             $msg = '※クッキーはありません。';
+//         }
+//         return view('hello.index', ['msg' => $msg]);
+//     }
+
+//     public function post(Request $request)
+//     {
+//         $validate_rule = [
+//             'msg' => 'required',
+//         ];
+//         $this->validate($request, $validate_rule);
+//         $msg = $request->msg;
+//         $response = response()->view(
+//             'hello.index',
+//             ['msg' => '「' . $msg .
+//                 '」をクッキーに保存しました。']
+//         );
+//         $response->cookie('msg', $msg, 100);
+//         return $response;
+//     }
+// }
+
+// 5-4 DBクラスの利用 P192
+// use Illuminate\Support\Facades\DB;
+
+// class HelloController extends Controller
+// {
+//    public function index(Request $request)
+//    {
+//       $items = DB::select('select * from people');
+//       return view('hello.index', ['items' => $items]);
+//    }
+// }
+
+// 5-7 パラメータ結合の利用 P194
+// use Illuminate\Support\Facades\DB;
+
+// class HelloController extends Controller
+// {
+//    public function index(Request $request)
+//    {
+//       if (isset($request->id)) {
+//          $param = ['id' => $request->id];
+//          $items = DB::select(
+//             'select * from people where id = :id',
+//             $param
+//          );
+//       } else {
+//          $items = DB::select('select * from people');
+//       }
+//       return view('hello.index', ['items' => $items]);
+//    }
+// }
+
+// 5-9 insertによるレコード作成
+use Illuminate\Support\Facades\DB;
+
 class HelloController extends Controller
 {
+   // public function index(Request $request)
+   // {
+   //    $items = DB::select('select * from people');
+   //    return view('hello.index', ['items' => $items]);
+   // }
 
-    public function index(Request $request)
-    {
-        return view('hello.index', ['msg' => 'フォームを入力：']);
-    }
+   public function post(Request $request)
+   {
+      $items = DB::select('select * from people');
+      return view('hello.index', ['items' => $items]);
+   }
 
+   public function add(Request $request)
+   {
+      return view('hello.add');
+   }
 
-    public function post(Request $request)
-    {
-        $validate_rule = [
-            'name' => 'required',
-            'mail' => 'email',
-            'age' => 'numeric|between:0,150',
-        ];
-        $this->validate($request, $validate_rule);
-        return view('hello.index', ['msg' => '正しく入力されました！']);
-    }
+   public function create(Request $request)
+   {
+      $param = [
+         'name' => $request->name,
+         'mail' => $request->mail,
+         'age' => $request->age,
+      ];
+      DB::insert('insert into people (name, mail, age) values (:name, :mail, :age)', $param);
+      return redirect('/hello');
+   }
+   //5-12 edit及びupdateアクションの追加 P200 
+   public function edit(Request $request)
+   {
+      $param = ['id' => $request->id];
+      $item = DB::select('select * from people where id = :id', $param);
+      return view('hello.edit', ['form' => $item[0]]);
+   }
+
+   public function update(Request $request)
+   {
+      $param = [
+         'id' => $request->id,
+         'name' => $request->name,
+         'mail' => $request->mail,
+         'age' => $request->age,
+      ];
+      DB::update('update people set name =:name, mail = :mail, age = :age where id = :id', $param);
+      return redirect('/hello');
+   }
+
+   // del,及びremoveアクションの追加
+   public function del(Request $request)
+   {
+      $param = ['id' => $request->id];
+      $item = DB::select('select * from people where id = :id', $param);
+      return view('hello.del', ['form' => $item[0]]);
+   }
+
+   public function remove(Request $request)
+   {
+      $param = ['id' => $request->id];
+      DB::delete('delete from people where id = :id', $param);
+      return redirect('/hello');
+   }
+
+   // 5-17 5-9の全レコード部分を書き換え　P205
+   public function index(Request $request)
+   {
+      $items = DB::table('people')->get();
+      return view('hello.index', ['items' => $items]);
+   }
 }

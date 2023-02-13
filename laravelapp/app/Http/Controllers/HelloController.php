@@ -178,8 +178,10 @@ use Illuminate\Http\Request;
 // {
 //     public function index()
 //     {
+//テンプレートに渡す用の連想配列
+//ここの「キー」はテンプレート側の同じ名前の変数に自動的に渡される 
 // hello.indexテンプレートを変数ataを使ってレンダリング(穴埋め)して、
-// view(テンプレート名,第1引数に設定したテンプレート)
+//view(テンプレート名,第一引数に設定したテンプレートをレンダリングするための値が入った配列);
 //         $data = ['msg' => 'これはコントローラから渡されたメッセージです。'];
 // returnはview()メソッドで呼び出した結果を返す
 //         return view('hello.index', $data);
@@ -189,6 +191,7 @@ use Illuminate\Http\Request;
 // 3-8
 // class HelloController extends Controller
 // {
+//引数idには呼び出し元で受け取ったパラメータが渡される
 //     public function index($id = 'zero')
 //     {
 //         $data = [
@@ -429,6 +432,122 @@ class HelloController extends Controller
       return view('hello.index', ['items' => $items]);
    }
 
+   // public function add(Request $request)
+   // {
+   //    return view('hello.add');
+   // }
+
+   // public function create(Request $request)
+   // {
+   //    $param = [
+   //       'name' => $request->name,
+   //       'mail' => $request->mail,
+   //       'age' => $request->age,
+   //    ];
+   //    DB::insert('insert into people (name, mail, age) values (:name, :mail, :age)', $param);
+   //    return redirect('/hello');
+   // }
+   //5-12 edit及びupdateアクションの追加 P200 
+   // public function edit(Request $request)
+   // {
+   //    $param = ['id' => $request->id];
+   //    $item = DB::select('select * from people where id = :id', $param);
+   //    return view('hello.edit', ['form' => $item[0]]);
+   // }
+
+   // public function update(Request $request)
+   // {
+   //    $param = [
+   //       'id' => $request->id,
+   //       'name' => $request->name,
+   //       'mail' => $request->mail,
+   //       'age' => $request->age,
+   //    ];
+   //    DB::update('update people set name =:name, mail = :mail, age = :age where id = :id', $param);
+   //    return redirect('/hello');
+   // }
+
+   // del,及びremoveアクションの追加
+   // public function del(Request $request)
+   // {
+   //    $param = ['id' => $request->id];
+   //    $item = DB::select('select * from people where id = :id', $param);
+   //    return view('hello.del', ['form' => $item[0]]);
+   // }
+
+   // public function remove(Request $request)
+   // {
+   //    $param = ['id' => $request->id];
+   //    DB::delete('delete from people where id = :id', $param);
+   //    return redirect('/hello');
+   // }
+
+   // 5-17 5-9の全レコード部分を書き換え　P205
+   // public function index(Request $request)
+   // {
+   //    $items = DB::table('people')->get();
+   //    return view('hello.index', ['items' => $items]);
+   // }
+
+   // 5-19 指定したIDのレコードを取得
+   // public function show(Request $request)
+   // {
+   //    $id = $request->id;
+   //    $item = DB::table('people')->where('id', $id)->first();
+   //    return view('hello.show', ['item' => $item]);
+   // }
+
+   // 5-22 演算記号を指定した検索 P210
+   // public function show(Request $request)
+   // {
+   //    $id = $request->id;
+   //    $items = DB::table('people')->where('id', '<=', $id)->get();
+   //    return view('hello.show', ['items' => $items]);
+   // }
+
+   // 5-23 複数の条件を設定、nameとmailから検索
+   // public function show(Request $request)
+   // {
+   //    $name = $request->name;
+   //    $items = DB::table('people')
+   //       ->where('name', 'like', '%' . $name . '%')
+   //       ->orWhere('mail', 'like', '%' . $name . '%')
+   //       ->get();
+   //    return view('hello.show', ['items' => $items]);
+   // }
+
+   // 5-24 whereRawによる条件検索　P212
+   // public function show(Request $request)
+   // {
+   //    $min = $request->min;
+   //    $max = $request->max;
+   //    $items = DB::table('people')
+   //       ->whereRaw(
+   //          'age >= ? and age <= ?',
+   //          [$min, $max]
+   //       )->get();
+   //    return view('hello.show', ['items' => $items]);
+   // }
+
+   // 5-25並び順を指定するorderBy P214
+   public function index(Request $request)
+   {
+      $items = DB::table('people')->orderBy('age', 'asc')->get();
+      return view('hello.index', ['items' => $items]);
+   }
+
+   // offsetとlimit P215
+   public function show(Request $request)
+   {
+      $page = $request->page;
+      $items = DB::table('people')
+         ->offset($page * 3)
+         ->limit(3)
+         ->get();
+      return view('hello.show', ['items' => $items]);
+   }
+
+   // 5-27 insertによるレコード追加 P217
    public function add(Request $request)
    {
       return view('hello.add');
@@ -441,48 +560,43 @@ class HelloController extends Controller
          'mail' => $request->mail,
          'age' => $request->age,
       ];
-      DB::insert('insert into people (name, mail, age) values (:name, :mail, :age)', $param);
+      DB::table('people')->insert($param);
       return redirect('/hello');
    }
-   //5-12 edit及びupdateアクションの追加 P200 
+
+   // 5-28 updateによるレコード更新　P218
    public function edit(Request $request)
    {
-      $param = ['id' => $request->id];
-      $item = DB::select('select * from people where id = :id', $param);
-      return view('hello.edit', ['form' => $item[0]]);
+      $item = DB::table('people')
+         ->where('id', $request->id)->first();
+      return view('hello.edit', ['form' => $item]);
    }
 
    public function update(Request $request)
    {
       $param = [
-         'id' => $request->id,
          'name' => $request->name,
          'mail' => $request->mail,
          'age' => $request->age,
       ];
-      DB::update('update people set name =:name, mail = :mail, age = :age where id = :id', $param);
+      DB::table('people')
+         ->where('id', $request->id)
+         ->update($param);
       return redirect('/hello');
    }
 
-   // del,及びremoveアクションの追加
+// 5-29 deleteによるレコード削除 P220
    public function del(Request $request)
    {
-      $param = ['id' => $request->id];
-      $item = DB::select('select * from people where id = :id', $param);
-      return view('hello.del', ['form' => $item[0]]);
+      $item = DB::table('people')
+         ->where('id', $request->id)->first();
+      return view('hello.del', ['form' => $item]);
    }
 
    public function remove(Request $request)
    {
-      $param = ['id' => $request->id];
-      DB::delete('delete from people where id = :id', $param);
+      DB::table('people')
+         ->where('id', $request->id)->delete();
       return redirect('/hello');
-   }
-
-   // 5-17 5-9の全レコード部分を書き換え　P205
-   public function index(Request $request)
-   {
-      $items = DB::table('people')->get();
-      return view('hello.index', ['items' => $items]);
    }
 }

@@ -1,8 +1,9 @@
 <!-- 3-27  P88-->
 @extends('layouts.helloapp')
 
+<!-- @section(セクション名, -->
 @section('title', 'Index')
-
+<!-- menubarというセクション名をつけて管理 -->
 @section('menubar')
 @parent
 インデックスページ

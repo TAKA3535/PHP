@@ -1,30 +1,31 @@
+<!-- 5-18 指定したIDのレコードを取得 -->
 @extends('layouts.helloapp')
 
-@section('title', 'Index')
+@section('title', 'Show')
 
 @section('menubar')
 @parent
-インデックスページ
+詳細ページ
 @endsection
 
 @section('content')
-<!-- 5-5  P192-->
-@section('content')
 <table>
     <tr>
-        <th >id:</th>
-        <th>Name</th>
-        <th>Mail</th>
-        <th>Age</th>
-    </tr>
-    @foreach ($items as $item)
-    <tr>
+        <th>id: </th>
         <td>{{$item->id}}</td>
+    </tr>
+    <tr>
+        <th>name: </th>
         <td>{{$item->name}}</td>
+    </tr>
+    <tr>
+        <th>mail: </th>
         <td>{{$item->mail}}</td>
+    </tr>
+    <tr>
+        <th>age: </th>
         <td>{{$item->age}}</td>
     </tr>
-    @endforeach
 </table>
 @endsection
 

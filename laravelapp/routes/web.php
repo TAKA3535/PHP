@@ -57,3 +57,8 @@ Route::post('hello/edit', 'App\Http\Controllers\HelloController@update');
 // 5-16 5-13,4-16,5-10とセット
 Route::get('hello/del', 'App\Http\Controllers\HelloController@del');
 Route::post('hello/del', 'App\Http\Controllers\HelloController@remove');
+// 5-20 4-16以降セット
+Route::get('hello/show', 'App\Http\Controllers\HelloController@show');
+
+// 6-4 
+Route::get('person', 'App\Http\Controllers\PersonController@index');

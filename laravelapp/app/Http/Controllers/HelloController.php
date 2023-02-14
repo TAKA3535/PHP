@@ -343,6 +343,7 @@ use Illuminate\Http\Request;
 
 //     public function post(Request $request)
 //     {
+   // validateメソッドはララベルが最初からControllerクラスに用意してくれてる
 //         $validate_rule = [
 //             'name' => 'required',
 //             'mail' => 'email',

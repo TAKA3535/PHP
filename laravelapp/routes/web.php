@@ -62,3 +62,25 @@ Route::get('hello/show', 'App\Http\Controllers\HelloController@show');
 
 // 6-4 
 Route::get('person', 'App\Http\Controllers\PersonController@index');
+
+// 6-9
+Route::get('person/find', 'App\Http\Controllers\PersonController@find');
+Route::post('person/find', 'App\Http\Controllers\PersonController@search');
+
+// 6-21
+Route::get('person/add', 'App\Http\Controllers\PersonController@add');
+Route::post('person/add', 'App\Http\Controllers\PersonController@create');
+
+// 6-24
+Route::get('person/edit', 'App\Http\Controllers\PersonController@edit');
+Route::post('person/edit', 'App\Http\Controllers\PersonController@update');
+
+// 6-26 
+Route::get('person/del', 'App\Http\Controllers\PersonController@delete');
+Route::post('person/del', 'App\Http\Controllers\PersonController@remove');
+
+// 6-34
+Route::get('board', 'App\Http\Controllers\BoardController@index');
+
+Route::get('board/add', 'App\Http\Controllers\BoardController@add');
+Route::post('board/add', 'App\Http\Controllers\BoardController@create');

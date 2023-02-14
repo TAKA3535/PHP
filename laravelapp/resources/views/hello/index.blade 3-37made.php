@@ -1,10 +1,14 @@
 <!-- 3-27  P88-->
+<!-- テンプレートの継承に使用するディレクティブ
+    @extends('フォルダ名.テンプレート名')   -->
 @extends('layouts.helloapp')
 
-<!-- @section(セクション名, -->
+<!-- @sestion('セクション名','セクションに入れる値') -->
 @section('title', 'Index')
-<!-- menubarというセクション名をつけて管理 -->
+<!-- @sestion('menubar')～@endsectionまでをまとめて
+    menubarというセクション名をつけて、１つのまとまりとして管理します -->
 @section('menubar')
+<!-- 親レイアウトの中のセクションをここに埋め込み -->
 @parent
 インデックスページ
 @endsection
@@ -13,7 +17,10 @@
 <p>ここが本文のコンテンツです。</p>
 <p>必要なだけ記述できます。</p>
 <!-- 3-29 コンポーネントの組込み-->
+<!-- @component('フォルダ名.コンポーネント名') -->
 <!-- @component('components.message')
+
+@slot → {{ }} 内の変数に値を渡す
 @slot('msg_title')
 CAUTION!
 @endslot

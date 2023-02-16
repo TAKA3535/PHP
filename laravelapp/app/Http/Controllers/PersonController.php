@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class PersonController extends Controller
 {
-    public function index(Request $request)
-    {
-        // 全レコード取得
-        $items = Person::all();
-        return view('person.index', ['items' => $items]);
-    }
+    // public function index(Request $request)
+    // {
+    //     // 全レコード取得
+    //     $items = Person::all();
+    //     return view('person.index', ['items' => $items]);
+    // }
 
     // 6-8 /findにGETアクセスしたときの処理　P244
     public function find(Request $request)
@@ -97,5 +97,15 @@ class PersonController extends Controller
     {
         Person::find($request->id)->delete();
         return redirect('/person');
+    }
+
+    // 6-40 投稿を持つ、持たないを分ける　P284
+    public function index(Request $request)
+    {
+        // boardを持つ者と持たないものをそれぞれ変数に取り出す
+        $hasItems = Person::has('boards')->get();
+        $noItems = Person::doesntHave('boards')->get();
+        $param = ['hasItems' => $hasItems, 'noItems' => $noItems];
+        return view('person.index', $param);
     }
 }

@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<table>
+<!-- <table>
     <tr>
         <th>ID</th>
         <th>Data</th>
@@ -22,6 +22,20 @@
         <td>{{$item->getData()}}</td>
         <td>{{$item->message}}</td>
         <td>{{$item->person_id	}}</td>
+    </tr>
+    @endforeach
+</table> -->
+
+<!-- 6-43 -->
+<table>
+    <tr>
+        <th>Message</th>
+        <th>Name</th>
+    </tr>
+    @foreach ($items as $item)
+    <tr>
+        <td>{{$item->message}}</td>
+        <td>{{$item->person->name}}</td>
     </tr>
     @endforeach
 </table>

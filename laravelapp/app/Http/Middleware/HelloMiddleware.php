@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 //             ['name' => 'hanako', 'mail' => 'hanako@flower'],
 //             ['name' => 'sachiko', 'mail' => 'sachico@happy'],
 //         ];
+
+        // 配列data($data)にdataというを名前を付けて
+        //marge() 内容を追加
 //         $request->merge(['data' => $data]);
 //         return $next($request);
 //     }

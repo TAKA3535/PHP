@@ -34,6 +34,8 @@
 </form> -->
 <!-- 4-17 エラーメッセージの保持 P127 -->
 <!-- <p>{{$msg}}</p>
+errorsはlaravelの中に最初から用意されているオブジェクト
+もしバリデーションでエラーが発生したら
 @if (count($errors) > 0)
 <div>
     <ul> -->
@@ -49,6 +51,7 @@
         @csrf
         <tr>
             <th>name: </th>
+            old()メソッドは前回送信した値を出力
             <td><input type="text" name="name" value="{{old('name')}}"></td>
         </tr>
         <tr>
@@ -74,6 +77,8 @@
 <table>
     <form action="/hello" method="post">
         @csrf
+        //--hasはエラーが発生しているかをチェックするメソッド、trueであればエラーが発生している
+        //--もしname属性であれば下記(trueブロック)を実装
         @if ($errors->has('name'))
         <tr>
             <th>ERROR</th>

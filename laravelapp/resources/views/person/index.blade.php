@@ -6,63 +6,17 @@
 @parent
 インデックスページ
 @endsection
-
+<!-- 6-41 投稿を持つ人と持たない人で分ける -->
 @section('content')
-<!-- <table>
-    <tr>
-        <th>Name</th>
-        <th>Mail</th>
-        <th>Age</th>
-    </tr>
-    @foreach ($items as $item)
-    <tr>
-        <td>{{$item->name}}</td>
-        <td>{{$item->mail}}</td>
-        <td>{{$item->age}}</td>
-    </tr>
-    @endforeach
-</table> -->
-
-<!-- 6/6 -->
-<!-- <table>
-    <tr>
-        <th>Data</th>
-    </tr>
-    @foreach ($items as $item)
-    <tr>
-        <td>{{$item->getData()}}</td>
-    </tr>
-    @endforeach
-</table> -->
-
-<!-- 6-36 1対1 -->
-<!-- <table>
-    <tr>
-        <th>Person</th>
-        <th>Board</th>
-    </tr>
-    @foreach ($items as $item)
-    <tr>
-        <td>{{$item->getData()}}</td>
-        <td>@if ($item->board != null)
-            {{$item->board->getData()}}
-            @endif
-        </td>
-    </tr>
-    @endforeach
-</table> -->
-
-<!-- 6-38 1対多 -->
 <table>
     <tr>
         <th>Person</th>
         <th>Board</th>
     </tr>
-    @foreach ($items as $item)
+    @foreach ($hasItems as $item)
     <tr>
         <td>{{$item->getData()}}</td>
         <td>
-            @if ($item->boards != null)
             <table width="100%">
                 @foreach ($item->boards as $obj)
                 <tr>
@@ -70,8 +24,18 @@
                 </tr>
                 @endforeach
             </table>
-            @endif
         </td>
+    </tr>
+    @endforeach
+</table>
+<div style="margin:10px;"></div>
+<table>
+    <tr>
+        <th>Person</th>
+    </tr>
+    @foreach ($noItems as $item)
+    <tr>
+        <td>{{$item->getData()}}</td>
     </tr>
     @endforeach
 </table>

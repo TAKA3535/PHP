@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class BoardController extends Controller
 {
 
-    public function index(Request $request)
-    {
-        $items = Board::all();
-        return view('board.index', ['items' => $items]);
-    }
+    // public function index(Request $request)
+    // {
+    //     $items = Board::all();
+    //     return view('board.index', ['items' => $items]);
+    // }
 
     public function add(Request $request)
     {
@@ -27,5 +27,12 @@ class BoardController extends Controller
         unset($form['_token']);
         $board->fill($form)->save();
         return redirect('/board');
+    }
+
+    // 6-42 withを使ってデータベースのアクセス回数を減少させる
+    public function index(Request $request)
+    {
+        $items = Board::with('person')->get();
+        return view('board.index', ['items' => $items]);
     }
 }

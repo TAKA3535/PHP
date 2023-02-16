@@ -33,12 +33,14 @@
 
 // 3-16 P72
 // Route::get('hello', 'App\Http\Controllers\HelloController@index');
+//postリクエストが発生した場合はルーティングもpostで行う
 // Route::post('hello', 'App\Http\Controllers\HelloController@post');
 
 // 4-3 ミドルウェアの実行 P112 
 use App\Http\Middleware\HelloMiddleware;
 
 // Route::get('hello', 'App\Http\Controllers\HelloController@index')
+//middlewareメソッド ミドルウエアを使用する際に使用する
 //     ->middleware(HelloMiddleware::class);
 
 // 4-13
@@ -84,3 +86,19 @@ Route::get('board', 'App\Http\Controllers\BoardController@index');
 
 Route::get('board/add', 'App\Http\Controllers\BoardController@add');
 Route::post('board/add', 'App\Http\Controllers\BoardController@create');
+
+// 7-15
+Route::get('hello/session', 'App\Http\Controllers\HelloController@ses_get');
+Route::post('hello/session', 'App\Http\Controllers\HelloController@ses_put');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// 7-31 
+Route::get('hello', 'App\Http\Controllers\HelloController@index')
+    ->middleware('auth');
+
+    // 7-34
+Route::get('hello/auth', 'App\Http\Controllers\HelloController@getAuth');
+Route::post('hello/auth', 'App\Http\Controllers\HelloController@postAuth');

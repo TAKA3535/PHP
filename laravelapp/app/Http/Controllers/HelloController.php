@@ -3,6 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// 4-22
+use App\Http\Requests\HelloRequest;
+//4-24
+use Validator;
+// 5-9 insertによるレコード作成
+use Illuminate\Support\Facades\DB;
+//7-20
+use App\Models\Person;
+//7-29
+use Illuminate\Support\Facades\Auth;
 
 // <!-- ↓2-7 P42 -->
 // 10行目はControllerクラスを継承したHelloControllerクラス
@@ -343,7 +353,7 @@ use Illuminate\Http\Request;
 
 //     public function post(Request $request)
 //     {
-   // validateメソッドはララベルが最初からControllerクラスに用意してくれてる
+// validateメソッドはララベルが最初からControllerクラスに用意してくれてる
 //         $validate_rule = [
 //             'name' => 'required',
 //             'mail' => 'email',
@@ -352,6 +362,102 @@ use Illuminate\Http\Request;
 //         $this->validate($request, $validate_rule);
 //         return view('hello.index', ['msg' => '正しく入力されました！']);
 //     }
+
+// 4-22
+//    public function post(HelloRequest $request)
+// {
+//    return view('hello.index', ['msg'=>'正しく入力されました！']);
+// }
+
+// 4-24
+// public function post(Request $request)
+// {
+// makeメソッドを使ってvalidatorインスタンスを作成
+// $requestのフォームの中を全部取り出して$validatorに代入、$validatorにはインスタンス化したValidatorクラスが入っている
+// $validator  = Validator::make(値の配列,バリデーションのルールの配列);
+//    $validator = Validator::make($request->all(), [
+//        'name' => 'required',
+//        'mail' => 'email',
+//        'age' => 'numeric|between:0,150',
+//    ]);
+// $validatorの中にはValidator
+//    if ($validator->fails()) {
+//        return redirect('/hello')
+//                    ->withErrors($validator)
+//                    ->withInput();
+//    }
+//    return view('hello.index', ['msg'=>'正しく入力されました！']);
+// }
+
+// 4-25
+// public function index(Request $request)
+// {
+//    $validator = Validator::make($request->query(), [
+//        'id' => 'required',
+//        'pass' => 'required',
+//    ]);
+//    if ($validator->fails()) {
+//        $msg = 'クエリーに問題があります。';
+//    } else {
+//        $msg = 'ID/PASSを受け付けました。フォームを入力下さい。';
+//    }
+//    return view('hello.index', ['msg'=>$msg, ]);
+// }
+
+// 4-26
+// public function post(Request $request)
+// {
+//    $rules = [
+//        'name' => 'required',
+//        'mail' => 'email',
+//        'age' => 'numeric|between:0,150',
+//    ];
+//    $messages = [
+//        'name.required' => '名前は必ず入力して下さい。',
+//        'mail.email'  => 'メールアドレスが必要です。',
+//        'age.numeric' => '年齢を整数で記入下さい。',
+//        'age.between' => '年齢は０～150の間で入力下さい。',
+//    ];
+//    $validator = Validator::make($request->all(), $rules, $messages);
+//    if ($validator->fails()) {
+//        return redirect('/hello')
+//            ->withErrors($validator)
+//            ->withInput();
+//    }
+//    return view('hello.index', ['msg'=>'正しく入力されました！']);
+// }
+
+// 4-27
+// public function post(Request $request)
+// {
+//    $rules = [
+//        'name' => 'required',
+//        'mail' => 'email',
+//        'age' => 'numeric',
+//    ];
+//    $messages = [
+//        'name.required' => '名前は必ず入力して下さい。',
+//        'mail.email'  => 'メールアドレスが必要です。',
+//        'age.numeric' => '年齢は整数で記入下さい。',
+//        'age.min' => '年齢はゼロ歳以上で記入下さい。',
+//        'age.max' => '年齢は200歳以下で記入下さい。',
+//    ];
+//    $validator = Validator::make($request->all(), $rules, $messages);
+
+//    $validator->sometimes('age', 'min:0', function($input){
+//        return !is_int($input->age);
+//    });
+//    $validator->sometimes('age', 'max:200', function($input){
+//        return !is_int($input->age);
+//    });
+
+//    if ($validator->fails()) {
+//        return redirect('/hello')
+//            ->withErrors($validator)
+//            ->withInput();
+//    }
+//    return view('hello.index', ['msg'=>'正しく入力されました！']);
+// }
 
 // 4-38 崛起を保存しそれを表示 P164
 // class HelloController extends Controller
@@ -415,9 +521,6 @@ use Illuminate\Http\Request;
 //       return view('hello.index', ['items' => $items]);
 //    }
 // }
-
-// 5-9 insertによるレコード作成
-use Illuminate\Support\Facades\DB;
 
 class HelloController extends Controller
 {
@@ -531,11 +634,11 @@ class HelloController extends Controller
    // }
 
    // 5-25並び順を指定するorderBy P214
-   public function index(Request $request)
-   {
-      $items = DB::table('people')->orderBy('age', 'asc')->get();
-      return view('hello.index', ['items' => $items]);
-   }
+   // public function index(Request $request)
+   // {
+   //    $items = DB::table('people')->orderBy('age', 'asc')->get();
+   //    return view('hello.index', ['items' => $items]);
+   // }
 
    // offsetとlimit P215
    public function show(Request $request)
@@ -586,7 +689,7 @@ class HelloController extends Controller
       return redirect('/hello');
    }
 
-// 5-29 deleteによるレコード削除 P220
+   // 5-29 deleteによるレコード削除 P220
    public function del(Request $request)
    {
       $item = DB::table('people')
@@ -599,5 +702,97 @@ class HelloController extends Controller
       DB::table('people')
          ->where('id', $request->id)->delete();
       return redirect('/hello');
+   }
+
+   // 7-14  P308
+   public function ses_get(Request $request)
+   {
+      $sesdata = $request->session()->get('msg');
+      return view('hello.session', ['session_data' => $sesdata]);
+   }
+
+   public function ses_put(Request $request)
+   {
+      $msg = $request->input;
+      $request->session()->put('msg', $msg);
+      return redirect('hello/session');
+   }
+
+   // // 7-20 ペジネーション　P313
+   //    public function index(Request $request)
+   //    {
+   //       $items = DB::table('people')->simplePaginate(5);
+   //       return view('hello.index', ['items' => $items]);
+   //    }
+
+   // 7-22 ソート順を変更 P317
+   // public function index(Request $request)
+   // {
+   //    $sort = $request->sort;
+   //    $items = DB::table('people')->orderBy($sort, 'asc')->simplePaginate(5);
+   //    // ↓はモデルを利用した方法
+   //    // $items = Person::orderBy($sort, 'asc')
+   //    //    ->simplePaginate(5);
+   //    $param = ['items' => $items, 'sort' => $sort];
+   //    return view('hello.index', $param);
+   // }
+
+   // 7-24
+   // public function index(Request $request)
+   // {
+   //    // $sort = $request->sort;
+   //    // $items = Person::orderBy($sort, 'asc')
+   //    //    ->paginate(5);
+
+   //    // 教科書通りの上記だとエラー
+   //    // $request->sortの中身はNullなのでNullのときに初期値を設定してエラー回避
+   //    if (!$request->sort) {
+   //       $sort = 'id';
+   //    } else {
+   //       $sort = $request->sort;
+   //    }
+   //    $items = Person::orderBy($sort, 'asc')
+   //       ->paginate(5);
+   //    $param = ['items' => $items, 'sort' => $sort];
+   //    return view('hello.index', $param);
+   // }
+
+   // 7-29 ログイン
+   public function index(Request $request)
+   {
+      $user = Auth::user();
+      // $sort = $request->sort;
+      // 上記だとエラーになるので下記も追加
+      if (!$request->sort) {
+         $sort = 'id';
+      } else {
+         $sort = $request->sort;
+      }
+      $items = Person::orderBy($sort, 'asc')
+         ->simplePaginate(5);
+      $param = ['items' => $items, 'sort' => $sort, 'user' => $user];
+      return view('hello.index', $param);
+   }
+
+   // 7-33
+   public function getAuth(Request $request)
+   {
+      $param = ['message' => 'ログインして下さい。'];
+      return view('hello.auth', $param);
+   }
+
+   public function postAuth(Request $request)
+   {
+      $email = $request->email;
+      $password = $request->password;
+      if (Auth::attempt([
+         'email' => $email,
+         'password' => $password
+      ])) {
+         $msg = 'ログインしました。（' . Auth::user()->name . '）';
+      } else {
+         $msg = 'ログインに失敗しました。';
+      }
+      return view('hello.auth', ['message' => $msg]);
    }
 }

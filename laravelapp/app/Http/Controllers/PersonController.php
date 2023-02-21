@@ -26,6 +26,7 @@ class PersonController extends Controller
     //     // $item = Person::find($request->input);
     //     // 6-10 nameを検索する
     //     $item = Person::where('name', $request->input)->first();
+    // 
     //     $param = ['input' => $request->input, 'item' => $item];
     //     return view('person.find', $param);
     // }
